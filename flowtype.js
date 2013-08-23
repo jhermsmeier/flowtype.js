@@ -11,47 +11,77 @@
 *
 * Thanks to Giovanni Difeterici (http://www.gdifeterici.com/)
 */
-
-(function($) {
-   $.fn.flowtype = function(options) {
-
-// Establish default settings/variables
-// ====================================
-      var settings = $.extend({
-         maximum   : 9999,
-         minimum   : 1,
-         maxFont   : 9999,
-         minFont   : 1,
-         fontRatio : 35,
-         lineRatio : 1.45
-      }, options),
-
-// Do the magic math
-// =================
-      changes = function(el) {
-         var $el = $(el),
-            elw = $el.width(),
-            width = elw > settings.maximum ? settings.maximum : elw < settings.minimum ? settings.minimum : elw,
-            fontBase = width / settings.fontRatio,
-            fontSize = fontBase > settings.maxFont ? settings.maxFont : fontBase < settings.minFont ? settings.minFont : fontBase;
-
-         $el.css({
-            'font-size'   : fontSize + 'px',
-            'line-height' : fontSize * settings.lineRatio + 'px'
-         });
-      };
-
-// Make the magic visible
-// ======================
-      return this.each(function() {
-         
-      // Context for resize callback
-         var that = this;
-      // Make changes upon resize
-         $(window).resize(function(){changes(that);});
-         
-      // Set changes on load
-         changes(this);
-      });
-   };
-}(jQuery));
+(function() {
+  
+  var defaults = {
+    maximum   : 9999,
+    minimum   : 1,
+    maxFont   : 9999,
+    minFont   : 1,
+    fontRatio : 35,
+    lineRatio : 1.45
+  }
+  
+  var nodes = []
+  var frame = null
+  
+  function flowtype( selector, settings ) {
+    
+    settings = settings || {}
+    
+    var nodeList = document.querySelectorAll( selector )
+    var node, i = 0, options = {}
+    
+    for( var k in defaults ) {
+      options[k] = settings[k] || defaults[k]
+    }
+    
+    while( node = nodeList.item( i++ ) ) {
+      nodes.push({
+        element: node,
+        options: options
+      })
+    }
+    
+    update()
+    
+  }
+  
+  function update() {
+    
+    var i = 0
+    var node, element, options
+    var width, fontBase, fontSize
+    var elementWidth
+    
+    while( node = nodes[ i++ ] ) {
+      
+      element = node.element
+      options = node.options
+      
+      elementWidth = element.getBoundingClientRect().width
+      
+      width = elementWidth > options.maximum ?
+        options.maximum : elementWidth < options.minimum ?
+          options.minimum : elementWidth
+      
+      fontBase = width / options.fontRatio
+      
+      fontSize = fontBase > options.maxFont ?
+        options.maxFont : fontBase < options.minFont ?
+          options.minFont : fontBase
+      
+      element.style.fontSize =
+        fontSize + 'px'
+      
+      element.style.lineHeight =
+        fontSize * options.lineRatio + 'px'
+      
+    }
+    
+  }
+  
+  window.addEventListener( 'resize', update )
+  window.flowtype = flowtype
+  
+})()
