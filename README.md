@@ -4,7 +4,7 @@ Responsive web typography at its finest: font-size and line-height based on elem
 
 Check out the [demo site](http://simplefocus.com/flowtype).
 
-## What does FlowType.JS do? ##
+## What does FlowType do? ##
 
 Ideally, the most legible typography contains [between 45 and 75 characters per line](http://webtypography.net/Rhythm_and_Proportion/Horizontal_Motion/2.1.2/). This is difficult to accomplish for all screen widths with only CSS media-queries. FlowType.JS eases this difficulty by changing the font-size—and subsequently the line-height—based on a specific element's width. This allows for a perfect character count per line at any screen width.
 
@@ -17,7 +17,7 @@ Set minimum and maximum width thresholds to control the FlowType.JS magic within
 In this example, FlowType.JS will stop resizing text once the element width becomes smaller than 500px or larger than 1200px.
 
 ```javascript
-$('body').flowtype({
+flowtype( 'body', {
    minimum : 500,
    maximum : 1200
 });
@@ -28,7 +28,7 @@ Set minimum and maximum font-size thresholds to control the FlowType.JS magic wi
 In this example, FlowType.JS will stop resizing text once the font-size becomes smaller than 12px or larger than 40px.
 
 ```javascript
-$('body').flowtype({
+flowtype( 'body', {
    minFont : 12,
    maxFont : 40
 });
@@ -45,7 +45,7 @@ _Note:_ Because each font is different, you will need to "tweak" `fontSize` and 
 Line-height (`lineRatio`) is set based on the `fontRatio` size, and defaults to 1.45 (the recommended line-height for maximum legibility).
 
 ```javascript
-$('body').flowtype({
+flowtype( 'body', {
    fontRatio : 30,
    lineRatio : 1.45
 });
@@ -88,7 +88,7 @@ After you have downloaded FlowType.JS, include the `flowtype.jQuery.js` in the h
 To begin the magic, simply call FlowType.JS before the close of your body tag:
 
 ```javascript
-$('body').flowtype();
+flowtype('body');
 ```
 
 ### Step 4: Make Changes ###
@@ -96,7 +96,7 @@ $('body').flowtype();
 You will most likely want to change the default settings. To do so, simply include these options in your code and tweak away:
 
 ```javascript
-$('body').flowtype({
+flowtype( 'body', {
    minimum   : 500,
    maximum   : 1200,
    minFont   : 12,
